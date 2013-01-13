@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    bcrypt-ruby (3.0.1)
     domain_name (0.5.3)
       unf (~> 0.0.3)
     keep (0.0.3)
@@ -28,6 +29,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt-ruby
   keep
   mechanize
   minitest

@@ -4,20 +4,25 @@ require 'thor'
 require './lib/killswitch'
 
 class Killswitch < Thor
+  attr_accessor :killer
 
-  map "-L" => :list
-  
+  def initialize(*)
+    super
+    @killer = Killer.new
+  end
+
   desc "install APP_NAME", "install one of the available killswitches"
-  method_options :force => :boolean, :alias => :string
   def install(name)
-    user_alias = options[:alias]
-    if options.force?
-      # do something
-    end
-    # other code
+
+  end
+
+  desc "uninstall APP_NAME", "uninstall one of the installed killswitches"
+  def uninstall(name)
+
   end
   
   desc "list [SEARCH]", "list all of the available killswitches"
+  map "-L" => :list
   def list(search="")
     # list everything
   end
@@ -27,15 +32,15 @@ class Killswitch < Thor
     # config
   end
 
+  desc "configview APP_NAME", "display config of installed killswitches"
+  def configview
+    # config
+  end
+
   desc "kill", "run all installed killswitches"
   method_options :force => :boolean, :alias => :string
   def kill
     # aw lawdy
-  end
-
-  desc "killconfig", "configure global kill behavior"
-  def killconfig
-    # confirm required, password required, etc
   end
 
 end
