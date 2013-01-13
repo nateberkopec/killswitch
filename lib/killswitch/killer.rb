@@ -1,8 +1,9 @@
 class Killer
   include ::BCrypt
+  attr_writer :config
 
   def config
-    @config ||= Keep.new('config/config.yml')
+    @config ||= Keep.new("config/deploy/config.yml")
   end
 
   def switches

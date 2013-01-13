@@ -1,7 +1,7 @@
 class Switch
 
   def config
-    @config ||= Keep.new('config/config.yml')
+    @config ||= Keep.new("config/#{KILLSWITCH_ENV}/config.yml")
   end
 
   def kill
