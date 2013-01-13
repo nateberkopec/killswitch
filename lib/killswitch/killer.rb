@@ -26,9 +26,9 @@ class Killer
   private
 
   def installed_switches
-    switch_list = @config.get('switches').split(', ')
+    switch_list = @config.get('switches')
     switch_list.map do |switch|
-      (switch + "Switch").classify.constantize.new(@config.get(switch))
+      (switch + "Switch").classify.constantize.new(@config.get(switch.to_sym))
     end
   end
 
