@@ -1,3 +1,4 @@
 .rbenv-version
 .DS_Store
 config/test/config.yml
+Gemfile.lock

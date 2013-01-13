@@ -24,9 +24,15 @@ class TestKillswitch < MiniTest::Unit::TestCase
   end
 
   def test_killer_config_settings
-    binding.pry
     @app.killer.config.set('nuclear_launch_codes', '12345')
 
     assert_equal '12345', @app.killer.config.get('nuclear_launch_codes')
+  end
+
+  def test_killer_password_setting
+    @app.killer.password = '12345'
+
+    assert @app.killer.password == '12345'
+    refute @app.killer.config.get('password_hash').to_s == "12345" #it isnt plaintext
   end
 end
