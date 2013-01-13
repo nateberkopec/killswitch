@@ -4,6 +4,7 @@ require 'thor'
 require './lib/killswitch'
 
 class Killswitch < Thor
+
   map "-L" => :list
   
   desc "install APP_NAME", "install one of the available killswitches"

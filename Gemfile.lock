@@ -3,6 +3,7 @@ GEM
   specs:
     domain_name (0.5.3)
       unf (~> 0.0.3)
+    keep (0.0.3)
     mechanize (2.3)
       domain_name (~> 0.5, >= 0.5.1)
       mime-types (~> 1.17, >= 1.17.2)
@@ -27,6 +28,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  keep
   mechanize
   minitest
   thor
