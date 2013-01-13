@@ -10,8 +10,8 @@ class Killer
     @switches ||= installed_switches
   end
 
-  def kill
-    #kill all switches
+  def kill!
+    @switches.map { |s| s.kill! }
   end
 
   def password

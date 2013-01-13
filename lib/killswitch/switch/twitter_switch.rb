@@ -1,4 +1,4 @@
-class FacebookSwitch < Switch
+class TwitterSwitch < Switch
 
   def initialize(config)
 
@@ -9,7 +9,7 @@ class FacebookSwitch < Switch
   end
 
   def name
-    "facebook"
+    "twitter"
   end
 
 end

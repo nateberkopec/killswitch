@@ -37,9 +37,18 @@ class TestKillswitch < MiniTest::Unit::TestCase
   end
 
   def test_switches
+    @app.killer.config.set(:switches, 'facebook, twitter')
+
+    assert @app.killer.switches.length == 2
+    assert @app.killer.switches.first.class == FacebookSwitch
+    assert @app.killer.switches.first.name == "facebook"
+  end
+
+  def test_killer_kill
     @app.killer.config.set(:switches, 'facebook')
 
-    assert @app.killer.switches.length == 1
-    assert @app.killer.switches.first.class == FacebookSwitch
+    @app.killer.switches.first.stub :kill!, true do
+      assert @app.killer.kill! == [true]
+    end
   end
 end
