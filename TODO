@@ -3,3 +3,4 @@
 * Command line interface. killswitch kill
 * Encryption options? Using personal keys, etc?
 * config: hard vs soft killing, changing/scrambling passwords, confirmation steps ("two keys to launch the missile")
+* some kind of central trusted git server (?) homebrew-style for managing scripts

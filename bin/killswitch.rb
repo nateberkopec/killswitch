@@ -13,12 +13,16 @@ class Killswitch < Thor
 
   desc "install APP_NAME", "install one of the available killswitches"
   def install(name)
-
+   
   end
 
   desc "uninstall APP_NAME", "uninstall one of the installed killswitches"
   def uninstall(name)
-
+    if @killer.uninstall(name)
+      puts "#{name} uninstalled. Remaining: #{@killer.switches.reload.map{|s|s.name}}"
+    else 
+      puts "This switch is not installed."
+    end
   end
   
   desc "list [SEARCH]", "list all of the available killswitches"

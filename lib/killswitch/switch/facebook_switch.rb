@@ -7,7 +7,13 @@ class FacebookSwitch < Switch
   end
 
   def kill!
-    #do some mechanize
+    if @killmode == "password_reset"
+      "reset"
+    elsif @killmode == "destroy"
+      "destroyed"
+    else
+      raise "Invalid option for #{name} killmode"
+    end
   end
 
   def name

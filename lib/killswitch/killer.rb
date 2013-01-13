@@ -1,13 +1,23 @@
 class Killer
   include ::BCrypt
-  attr_writer :config
+  attr_accessor :config
 
-  def config
-    @config ||= Keep.new("config/deploy/config.yml")
+  def initialize
+    @config = Keep.new("config/deploy/config.yml")
   end
 
-  def switches
+  def switches(reload = false)
+    @switches = nil if reload
     @switches ||= installed_switches
+  end
+
+  def uninstall(switch)
+    switches = @config.get('switches')
+    return false unless switches && switches.include?(switch)
+
+    @config.delete(switch.to_sym)
+    @config.set('switches', @config.get('switches') - [switch])
+    switches(true)
   end
 
   def kill!
@@ -27,7 +37,7 @@ class Killer
 
   def installed_switches
     switch_list = @config.get('switches')
-    switch_list.map do |switch|
+    switch_list && switch_list.map do |switch|
       (switch + "Switch").classify.constantize.new(@config.get(switch.to_sym))
     end
   end

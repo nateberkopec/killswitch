@@ -38,8 +38,6 @@ class TestKillswitch < MiniTest::Unit::TestCase
   end
 
   def test_switches
-    @app.killer.config.set(:switches, ['facebook', 'twitter'])
-
     assert @app.killer.switches.length == 2
     assert @app.killer.switches.first.class == FacebookSwitch
     assert @app.killer.switches.first.name == "facebook"
@@ -47,13 +45,16 @@ class TestKillswitch < MiniTest::Unit::TestCase
 
   def test_killer_kill
     @app.killer.config.set(:switches, ['facebook'])
-    
+
     @app.killer.switches.first.stub :kill!, true do
       assert @app.killer.kill! == [true]
     end
   end
 
-  def test_killer_switch_configs
+  def test_uninstall
+    @app.killer.uninstall('twitter')
+
+    assert_equal ['facebook'], @app.killer.switches.map {|s| s.name}
   end
 
   private
@@ -68,7 +69,8 @@ class TestKillswitch < MiniTest::Unit::TestCase
         :username => 'billy@droptables.com',
         :password => '12345',
         :killmode => 'password'
-      }
+      },
+      :switches => ['facebook', 'twitter']
     }
   end
 end
