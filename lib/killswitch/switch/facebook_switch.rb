@@ -1,0 +1,3 @@
+class FacebookSwitch < Switch
+
+end

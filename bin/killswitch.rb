@@ -1,3 +1,8 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'thor'
+require './lib/killswitch'
+
 class Killswitch < Thor
   map "-L" => :list
   
@@ -22,6 +27,7 @@ class Killswitch < Thor
   end
 
   desc "kill", "run all installed killswitches"
+  method_options :force => :boolean, :alias => :string
   def kill
     # aw lawdy
   end
@@ -32,3 +38,5 @@ class Killswitch < Thor
   end
 
 end
+
+Killswitch.start
