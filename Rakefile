@@ -3,6 +3,8 @@ require 'rake/testtask'
 
 Bundler.require
 
+task :default => :test
+
 Rake::TestTask.new do |test|
   if ::RUBY_VERSION < '1.9'
     test.test_files = %w(test/test_killswitch.rb)
@@ -11,4 +13,7 @@ Rake::TestTask.new do |test|
   end
 end
 
-task :default => :test
+task :console do
+  sh "irb -rubygems -r ./lib/killswitch.rb"
+end
+

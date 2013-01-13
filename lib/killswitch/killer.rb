@@ -7,7 +7,7 @@ class Killer
   end
 
   def switches
-    #list installed switches
+    @switches ||= installed_switches
   end
 
   def kill
@@ -21,6 +21,15 @@ class Killer
   def password=(new_password)
     @password = Password.create(new_password)
     config.set(:password_hash, @password)
+  end
+
+  private
+
+  def installed_switches
+    switch_list = @config.get('switches').split(', ')
+    switch_list.map do |switch|
+      (switch + "Switch").classify.constantize.new(@config.get(switch))
+    end
   end
 
 end

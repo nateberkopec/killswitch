@@ -35,4 +35,11 @@ class TestKillswitch < MiniTest::Unit::TestCase
     assert @app.killer.password == '12345'
     refute @app.killer.config.get('password_hash').to_s == "12345" #it isnt plaintext
   end
+
+  def test_switches
+    @app.killer.config.set(:switches, 'facebook')
+
+    assert @app.killer.switches.length == 1
+    assert @app.killer.switches.first.class == FacebookSwitch
+  end
 end
