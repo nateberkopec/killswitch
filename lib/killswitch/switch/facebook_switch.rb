@@ -16,7 +16,7 @@ class FacebookSwitch < Switch
     end
   end
 
-  def name
+  def self.name
     "facebook"
   end
 

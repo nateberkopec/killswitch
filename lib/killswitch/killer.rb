@@ -11,9 +11,18 @@ class Killer
     @switches ||= installed_switches
   end
 
+  def switches_names
+    switches.each { |s| s.name }
+  end
+
+  def available_switches
+    Switch.subclasses.map { |s| s.name }
+  end
+
   def install(switch)
     switches = @config.get('switches')
     return true if switches && switches.include?(switch)
+    return false unless available_switches.include?(switch)
 
     @config.set(switch.to_sym, nil)
     @config.set('switches', @config.get('switches') + [switch])
@@ -46,8 +55,12 @@ class Killer
 
   def installed_switches
     switch_list = @config.get('switches')
-    switch_list && switch_list.map do |switch|
-      (switch + "Switch").classify.constantize.new(@config.get(switch.to_sym))
+    if switch_list
+      switch_list.map do |switch|
+        (switch + "Switch").classify.constantize.new(@config.get(switch.to_sym))
+      end
+    else
+      []
     end
   end
 

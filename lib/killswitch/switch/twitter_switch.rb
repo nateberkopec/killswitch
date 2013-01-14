@@ -8,7 +8,7 @@ class TwitterSwitch < Switch
     #do some mechanize
   end
 
-  def name
+  def self.name
     "twitter"
   end
 

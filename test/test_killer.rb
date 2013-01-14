@@ -38,9 +38,9 @@ class TestKillswitch < MiniTest::Unit::TestCase
   end
 
   def test_switches
-    assert @app.killer.switches.length == 2
-    assert @app.killer.switches.first.class == FacebookSwitch
-    assert @app.killer.switches.first.name == "facebook"
+    assert_equal 2, @app.killer.switches.length
+    assert_equal FacebookSwitch, @app.killer.switches.first.class
+    assert_equal ['twitter', 'facebook'], @app.killer.available_switches
   end
 
   def test_killer_kill
@@ -57,12 +57,20 @@ class TestKillswitch < MiniTest::Unit::TestCase
     assert_equal ['facebook'], @app.killer.switches.map {|s| s.name}
   end
 
+  def test_uninstall_fail
+    refute @app.killer.uninstall('myspace')
+  end
+
   def test_install
     @app.killer.uninstall('twitter')
     assert_equal ['facebook'], @app.killer.switches.map {|s| s.name}
 
     @app.killer.install('twitter')
     assert_equal ['facebook', 'twitter'], @app.killer.switches.map {|s| s.name}
+  end
+
+  def test_install_fail
+    refute @app.killer.install('myspace')
   end
 
   private

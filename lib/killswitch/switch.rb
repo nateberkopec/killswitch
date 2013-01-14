@@ -10,8 +10,12 @@ class Switch
     raise "The author of this switch did not redefine this method"
   end
 
-  def name
+  def self.name
     raise "The author of this switch did not redefine this method"
+  end
+
+  def name
+    self.class.name
   end
 
 end
