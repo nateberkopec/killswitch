@@ -6,71 +6,63 @@ require 'pry'
 class TestKillswitch < MiniTest::Unit::TestCase
 
   def setup
-    @app = Killswitch.new
+    @app = Killer.new
     @path = '/tmp/test'
-    @app.killer.config = Keep.new(@path)
-    config_fixtures.each { |k, v| @app.killer.config.set(k, v) }
+    @app.config = Keep.new(@path)
+    config_fixtures.each { |k, v| @app.config.set(k, v) }
   end
 
   def teardown
     `rm -rf #{@path}`
   end
 
-  def test_the_truth
-    assert true
+  def test_config_settings
+    @app.config.set('nuclear_launch_codes', '12345')
+
+    assert_equal '12345', @app.config.get('nuclear_launch_codes')
   end
 
-  def test_killer
-    assert_equal Killer, @app.killer.class
-  end
+  def test_password_setting
+    @app.password = '12345'
 
-  def test_killer_config_settings
-    @app.killer.config.set('nuclear_launch_codes', '12345')
-
-    assert_equal '12345', @app.killer.config.get('nuclear_launch_codes')
-  end
-
-  def test_killer_password_setting
-    @app.killer.password = '12345'
-
-    assert @app.killer.password == '12345'
-    refute @app.killer.config.get('password_hash').to_s == "12345" #it isnt plaintext
+    assert @app.password == '12345'
+    refute @app.config.get('password_hash').to_s == "12345" #it isnt plaintext
   end
 
   def test_switches
-    assert_equal 2, @app.killer.switches.length
-    assert_equal FacebookSwitch, @app.killer.switches.first.class
-    assert_equal ['twitter', 'facebook'], @app.killer.available_switches
+    assert_equal 2, @app.switches.length
+    assert_equal FacebookSwitch, @app.switches.first.class
+    assert_equal ['twitter', 'facebook'], @app.available_switches
   end
 
-  def test_killer_kill
-    @app.killer.config.set(:switches, ['facebook'])
+  def test_kill
+    @app.config.set(:switches, ['facebook'])
 
-    @app.killer.switches.first.stub :kill!, true do
-      assert @app.killer.kill! == [true]
+    @app.switches.first.stub :kill!, true do
+      assert @app.kill! == [true]
     end
   end
 
   def test_uninstall
-    @app.killer.uninstall('twitter')
+    @app.uninstall('twitter')
 
-    assert_equal ['facebook'], @app.killer.switches.map {|s| s.name}
+    assert_equal ['facebook'], @app.switches.map {|s| s.name}
   end
 
   def test_uninstall_fail
-    refute @app.killer.uninstall('myspace')
+    refute @app.uninstall('myspace')
   end
 
   def test_install
-    @app.killer.uninstall('twitter')
-    assert_equal ['facebook'], @app.killer.switches.map {|s| s.name}
+    @app.uninstall('twitter')
+    assert_equal ['facebook'], @app.switches.map {|s| s.name}
 
-    @app.killer.install('twitter')
-    assert_equal ['facebook', 'twitter'], @app.killer.switches.map {|s| s.name}
+    @app.install('twitter')
+    assert_equal ['facebook', 'twitter'], @app.switches.map {|s| s.name}
   end
 
   def test_install_fail
-    refute @app.killer.install('myspace')
+    refute @app.install('myspace')
   end
 
   private
