@@ -46,7 +46,7 @@ class Killswitch < Thor
   end
 
   desc "configview APP_NAME", "display config of installed killswitches"
-  def configview
+  def configview(name)
     # config
   end
 

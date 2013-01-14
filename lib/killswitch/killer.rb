@@ -12,7 +12,7 @@ class Killer
   end
 
   def switches_names
-    switches.each { |s| s.name }
+    switches.map { |k, _| k.to_s }
   end
 
   def available_switches
@@ -20,8 +20,7 @@ class Killer
   end
 
   def install(switch)
-    switches = @config.get('switches')
-    return true if switches && switches.include?(switch)
+    return true if switches && switches[switch.to_sym]
     return false unless available_switches.include?(switch)
 
     @config.set(switch.to_sym, nil)
@@ -30,8 +29,7 @@ class Killer
   end
 
   def uninstall(switch)
-    switches = @config.get('switches')
-    return false unless switches && switches.include?(switch)
+    return false unless switches && switches[switch.to_sym]
 
     @config.delete(switch.to_sym)
     @config.set('switches', @config.get('switches') - [switch])
@@ -39,7 +37,7 @@ class Killer
   end
 
   def kill!
-    @switches.map { |s| s.kill! }
+    @switches.map { |k, v| v.kill! }
   end
 
   def password
@@ -56,11 +54,13 @@ class Killer
   def installed_switches
     switch_list = @config.get('switches')
     if switch_list
-      switch_list.map do |switch|
-        (switch + "Switch").classify.constantize.new(@config.get(switch.to_sym))
+      switches = {}
+      switch_list.each do |switch|
+        switches[switch.to_sym] = (switch + "Switch").classify.constantize.new(@config.get(switch.to_sym))
       end
+      switches
     else
-      []
+      {}
     end
   end
 

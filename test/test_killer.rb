@@ -31,14 +31,14 @@ class TestKillswitch < MiniTest::Unit::TestCase
 
   def test_switches
     assert_equal 2, @app.switches.length
-    assert_equal FacebookSwitch, @app.switches.first.class
-    assert_equal ['twitter', 'facebook'], @app.available_switches
+    assert_equal FacebookSwitch, @app.switches.first[1].class
+    assert_equal ["twitter", "facebook"], @app.available_switches
   end
 
   def test_kill
     @app.config.set(:switches, ['facebook'])
 
-    @app.switches.first.stub :kill!, true do
+    @app.switches.first[1].stub :kill!, true do
       assert @app.kill! == [true]
     end
   end
@@ -46,7 +46,7 @@ class TestKillswitch < MiniTest::Unit::TestCase
   def test_uninstall
     @app.uninstall('twitter')
 
-    assert_equal ['facebook'], @app.switches.map {|s| s.name}
+    assert_equal ['facebook'], @app.switches_names
   end
 
   def test_uninstall_fail
@@ -55,10 +55,10 @@ class TestKillswitch < MiniTest::Unit::TestCase
 
   def test_install
     @app.uninstall('twitter')
-    assert_equal ['facebook'], @app.switches.map {|s| s.name}
+    assert_equal ['facebook'], @app.switches_names
 
     @app.install('twitter')
-    assert_equal ['facebook', 'twitter'], @app.switches.map {|s| s.name}
+    assert_equal ['facebook', 'twitter'], @app.switches_names
   end
 
   def test_install_fail
