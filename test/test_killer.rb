@@ -70,12 +70,12 @@ class TestKillswitch < MiniTest::Unit::TestCase
   def config_fixtures
     { :facebook => {
         :username => 'billy@droptables.com',
-        :password => '12345',
+        :password_hash => BCrypt::Password.create('12345').to_s,
         :killmode => 'password'
       },
       :twitter => {
         :username => 'billy@droptables.com',
-        :password => '12345',
+        :password_hash => BCrypt::Password.create('12345').to_s,
         :killmode => 'password'
       },
       :switches => ['facebook', 'twitter']

@@ -1,9 +1,10 @@
 class FacebookSwitch < Switch
 
   def initialize(config)
-    @killmode = config.fetch(:killmode)
-    @username = config.fetch(:username)
-    @password = config.fetch(:password)
+    config = {} if config.nil?
+    @killmode = config[:killmode]
+    @username = config[:username]
+    @password = config[:password_hash] && BCrypt::Password.new(config[:password_hash])
   end
 
   def kill!
