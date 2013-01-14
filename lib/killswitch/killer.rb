@@ -11,6 +11,15 @@ class Killer
     @switches ||= installed_switches
   end
 
+  def install(switch)
+    switches = @config.get('switches')
+    return true if switches && switches.include?(switch)
+
+    @config.set(switch.to_sym, nil)
+    @config.set('switches', @config.get('switches') + [switch])
+    switches(true)
+  end
+
   def uninstall(switch)
     switches = @config.get('switches')
     return false unless switches && switches.include?(switch)

@@ -57,6 +57,14 @@ class TestKillswitch < MiniTest::Unit::TestCase
     assert_equal ['facebook'], @app.killer.switches.map {|s| s.name}
   end
 
+  def test_install
+    @app.killer.uninstall('twitter')
+    assert_equal ['facebook'], @app.killer.switches.map {|s| s.name}
+
+    @app.killer.install('twitter')
+    assert_equal ['facebook', 'twitter'], @app.killer.switches.map {|s| s.name}
+  end
+
   private
 
   def config_fixtures
