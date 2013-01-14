@@ -6,6 +6,12 @@ class Killer
     @config = Keep.new("config/deploy/config.yml")
   end
 
+  def full_config
+    @config.keys.map do |key|
+      {key => @config.get(key)}
+    end
+  end
+
   def switches(reload = false)
     @switches = nil if reload
     @switches ||= installed_switches
@@ -24,7 +30,7 @@ class Killer
     return false unless available_switches.include?(switch)
 
     @config.set(switch.to_sym, nil)
-    @config.set('switches', @config.get('switches') + [switch])
+    @config.set('switches', (@config.get('switches') || []) + [switch])
     switches(true)
   end
 
@@ -36,8 +42,12 @@ class Killer
     switches(true)
   end
 
-  def kill!
-    @switches.map { |k, v| v.kill! }
+  def kill!(password_input)
+    if password == password_input
+      @switches.map { |k, v| v.kill! }
+    else
+      [false]
+    end
   end
 
   def password

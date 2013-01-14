@@ -1,5 +1,7 @@
 class TwitterSwitch < Switch
 
+  attr_accessor :killmode, :username, :password
+
   def initialize(config)
     config = {} if config.nil?
     @killmode = config[:killmode]

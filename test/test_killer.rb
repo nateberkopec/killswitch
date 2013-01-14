@@ -10,6 +10,7 @@ class TestKillswitch < MiniTest::Unit::TestCase
     @path = '/tmp/test'
     @app.config = Keep.new(@path)
     config_fixtures.each { |k, v| @app.config.set(k, v) }
+    @app.password = '12345'
   end
 
   def teardown
@@ -39,7 +40,8 @@ class TestKillswitch < MiniTest::Unit::TestCase
     @app.config.set(:switches, ['facebook'])
 
     @app.switches.first[1].stub :kill!, true do
-      assert @app.kill! == [true]
+      assert @app.kill!('12345') == [true]
+      assert @app.kill!('wrong_pass') == [false]
     end
   end
 
@@ -70,13 +72,13 @@ class TestKillswitch < MiniTest::Unit::TestCase
   def config_fixtures
     { :facebook => {
         :username => 'billy@droptables.com',
-        :password_hash => BCrypt::Password.create('12345').to_s,
-        :killmode => 'password'
+        :password => 'password',
+        :killmode => 'password_reset'
       },
       :twitter => {
         :username => 'billy@droptables.com',
-        :password_hash => BCrypt::Password.create('12345').to_s,
-        :killmode => 'password'
+        :password => 'password',
+        :killmode => 'password_reset'
       },
       :switches => ['facebook', 'twitter']
     }

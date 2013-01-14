@@ -40,20 +40,15 @@ class Killswitch < Thor
     puts @killer.available_switches.join(", ")
   end
 
-  desc "config APP_NAME", "configure one of the installed killswitches"
-  def config(name)
-    # config
+  desc "config", "display config of installed killswitches"
+  def config
+    ap @killer.full_config
   end
 
-  desc "configview APP_NAME", "display config of installed killswitches"
-  def configview(name)
-    # config
-  end
-
-  desc "kill", "run all installed killswitches"
-  method_options :force => :boolean, :alias => :string
-  def kill
-    # aw lawdy
+  desc "kill [PASSWORD]", "run all installed killswitches."
+  method_options :force => false
+  def kill(password)
+    @killer.kill!(password)
   end
 
 end
